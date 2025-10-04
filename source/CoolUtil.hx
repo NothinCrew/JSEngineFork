@@ -78,6 +78,22 @@ class CoolUtil
 		return (m / snap);
 	}
 
+	public static function coolLerp(base:Float, target:Float, ratio:Float):Float
+	{
+		return base + cameraLerp(ratio) * (target - base);
+	}
+
+	/**
+	 * Perform linear interpolation based on the current framerate.
+	 * @param lerp Value used to interpolate between `base` and `target`.
+	 *
+	 * @return The interpolated value.
+	 */
+	public static function cameraLerp(lerp:Float):Float
+	{
+		return lerp * (FlxG.elapsed / (1 / 60));
+	}
+
 	public static function isVersionNewer(versionA:String, versionB:String):Bool {
 		var partsA = versionA.split(".").map(Std.parseInt);
 		var partsB = versionB.split(".").map(Std.parseInt);

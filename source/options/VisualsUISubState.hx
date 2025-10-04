@@ -305,8 +305,8 @@ class VisualsUISubState extends BaseOptionsMenu
 			"Which icon bounce would you like?",
 			'iconBounceType',
 			'string',
-			'Golden Apple',
-			['Golden Apple', 'Dave and Bambi', 'Old Psych', 'New Psych', 'VS Steve', 'Plank Engine', 'Strident Crisis', 'None']);
+			'Vanilla',
+			['Vanilla', 'Golden Apple', 'Dave and Bambi', 'Old Psych', 'New Psych', 'VS Steve', 'Plank Engine', 'Strident Crisis', 'None']);
 		addOption(option);
 
 		var option:Option = new Option('Health Tweening',

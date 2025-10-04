@@ -29,8 +29,8 @@ class ClientPrefs { //default settings if it can't find a save file containing y
 	// i'm going to clean up the ui because i can't tell what's happening when i play jse
 	public static var noteSkin:String = 'Default';
 	public static var splashType:String = 'Default';
-	public static var noteSplashes:Bool = true;
-	public static var oppNoteSplashes:Bool = true;
+	public static var noteSplashes:Bool = true; // i think it must depend if it's botplay or not
+	public static var oppNoteSplashes:Bool = false;
 	public static var showNPS:Bool = true;
 	public static var showComboInfo:Bool = true;
 	public static var maxSplashLimit:Int = 16;
@@ -58,7 +58,7 @@ class ClientPrefs { //default settings if it can't find a save file containing y
 	public static var bfIconStyle:String = 'Default';
 	public static var ratingType:String = 'Default';
 	public static var simplePopups:Bool = false;
-	public static var iconBounceType:String = 'New Psych';
+	public static var iconBounceType:String = 'Vanilla';
 	public static var smoothHealth:Bool = true;
 	public static var smoothHPBug:Bool = false;
 	public static var noBopLimit:Bool = false;
@@ -70,7 +70,7 @@ class ClientPrefs { //default settings if it can't find a save file containing y
 	public static var scoreZoom:Bool = true;
 	public static var healthBarAlpha:Float = 1;
 	public static var showFPS:Bool = true;
-	public static var randomBotplayText:Bool = true;
+	public static var randomBotplayText:Bool = false;
 	public static var botTxtFade:Bool = true;
 	public static var pauseMusic:String = 'Tea Time';
 	public static var daMenuMusic:String = 'Default';
@@ -91,7 +91,10 @@ class ClientPrefs { //default settings if it can't find a save file containing y
 	public static var dynamicSpawnTime:Bool = false;
 	public static var noteSpawnTime:Float = 1;
 	public static var resolution:String = '1280x720';
-	public static var framerate:Int = 60;
+
+	// there must be a way for like automatically setting up the framerate from the current monitor the window is in
+	// but for now it will stay at 144
+	public static var framerate:Int = 144;
 
 	//Optimization
 	public static var charsAndBG:Bool = true;

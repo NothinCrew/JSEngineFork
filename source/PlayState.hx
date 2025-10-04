@@ -1429,7 +1429,7 @@ class PlayState extends MusicBeatState
 		botplayTxt.scrollFactor.set();
 		botplayTxt.borderSize = 1.25;
 		botplayTxt.visible = cpuControlled && !ClientPrefs.showcaseMode;
-		add(botplayTxt);
+		if (ClientPrefs.scoreStyle != "Vanilla") add(botplayTxt);
 		if (ClientPrefs.downScroll)
 			botplayTxt.y = timeBarBG.y - 78;
 
@@ -2165,6 +2165,13 @@ class PlayState extends MusicBeatState
 				setOnLuas('defaultPlayerStrumY' + i, playerStrums.members[i].y);
 			}
 
+			// i know it can be recreated with lua but isn't it cooler it bundled in the engine itself?
+			for (i in 0...opponentStrums.length)
+		  {
+			  playerStrums.members[i].x -= 55;
+			  opponentStrums.members[i].x -= 55;
+		  }
+
 			startedCountdown = true;
 			Conductor.songPosition = -Conductor.crochet * 5;
 			setOnLuas('startedCountdown', true);
@@ -2404,7 +2411,9 @@ class PlayState extends MusicBeatState
 				tempScore = 'Score: ' + formattedScore + missString + (comboInfo ? ' $divider Combo: ' + formattedCombo : '') + npsString + ' $divider Accuracy: $accuracy ['  + fcString + ']';
 
 			case 'Vanilla':
-				tempScore = 'Score: ' + formattedScore;
+				// hah
+				if (!cpuControlled) tempScore = 'Score: ' + formattedScore;
+				else tempScore = 'Bot Play Enabled';
 		}
 
 		scoreTxt.text = '${tempScore}\n';
@@ -3749,6 +3758,7 @@ class PlayState extends MusicBeatState
 	}
 
 	// Health icon updaters
+	// oh my god what is this... moxie please fix this
 	public dynamic function updateIconsScale(elapsed:Float)
 	{
 		if (ClientPrefs.iconBounceType == 'Old Psych') {
@@ -3765,6 +3775,17 @@ class PlayState extends MusicBeatState
 			iconP1.updateHitbox();
 			iconP2.updateHitbox();
 		}
+
+		if (ClientPrefs.iconBounceType == 'Vanilla') {
+      // ripped from that darnell leak source code
+			// not exactly the same one but it will work
+			iconP1.setGraphicSize(Std.int(CoolUtil.coolLerp(iconP1.width, 150, 0.15)));
+			iconP2.setGraphicSize(Std.int(CoolUtil.coolLerp(iconP2.width, 150, 0.15)));
+
+			iconP1.updateHitbox();
+			iconP2.updateHitbox();
+		}
+
 		if (ClientPrefs.iconBounceType == 'Dave and Bambi') {
 			iconP1.setGraphicSize(Std.int(FlxMath.lerp(iconP1.frameWidth, iconP1.width, 0.8 / playbackRate)),
 				Std.int(FlxMath.lerp(iconP1.frameHeight, iconP1.height, 0.8 / playbackRate)));
@@ -5625,7 +5646,7 @@ class PlayState extends MusicBeatState
 				camHUD.shake(playerChar.shakeIntensity / 2, playerChar.shakeDuration / playbackRate);
 			}
 			note.wasGoodHit = true;
-			if (!ClientPrefs.lessBotLag && ClientPrefs.noteSplashes && note.isSustainNote && splashesPerFrame[3] <= 4) spawnHoldSplashOnNote(note);
+			if (!ClientPrefs.lessBotLag && ClientPrefs.noteSplashes && note.isSustainNote && splashesPerFrame[3] <= 4 && !cpuControlled) spawnHoldSplashOnNote(note);
 			if (SONG.needsVoices && !ffmpegMode)
 				if (opponentChart && opponentVocals != null && opponentVocals.volume != 1) opponentVocals.volume = 1;
 				else if (!opponentChart && vocals.volume != 1 || vocals.volume != 1) vocals.volume = 1;
@@ -6169,6 +6190,14 @@ class PlayState extends MusicBeatState
 		iconBopsThisFrame++;
 		if (ClientPrefs.iconBopWhen == 'Every Beat')
 		{
+			if (ClientPrefs.iconBounceType == 'Vanilla')
+		  {
+			  iconP1.setGraphicSize(Std.int(iconP1.width + 30));
+			  iconP2.setGraphicSize(Std.int(iconP2.width + 30));
+
+			  iconP1.updateHitbox();
+			  iconP2.updateHitbox();
+		  }
 			if (ClientPrefs.iconBounceType == 'Dave and Bambi') {
 				final funny:Float = Math.max(Math.min(healthBar.value,(maxHealth/0.95)),0.1);
 
@@ -6283,6 +6312,11 @@ class PlayState extends MusicBeatState
 				if (bopBF) iconP1.setGraphicSize(Std.int(iconP1.width + 30), Std.int(iconP1.height + 30));
 				else iconP2.setGraphicSize(Std.int(iconP2.width + 30), Std.int(iconP2.height + 30));
 			}
+			if (ClientPrefs.iconBounceType == 'Vanilla')
+		  {
+			  if (bopBF) iconP1.setGraphicSize(Std.int(iconP1.width + 30));
+			  else iconP2.setGraphicSize(Std.int(iconP2.width + 30));
+		  }
 			if (ClientPrefs.iconBounceType == 'Strident Crisis') {
 				final funny:Float = (healthBar.percent * 0.01) + 0.01;
 
